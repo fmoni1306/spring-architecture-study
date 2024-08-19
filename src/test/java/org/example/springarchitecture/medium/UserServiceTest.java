@@ -6,7 +6,7 @@ import org.example.springarchitecture.user.domain.User;
 import org.example.springarchitecture.user.domain.UserCreate;
 import org.example.springarchitecture.user.domain.UserStatus;
 import org.example.springarchitecture.user.domain.UserUpdate;
-import org.example.springarchitecture.user.service.UserService;
+import org.example.springarchitecture.user.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class UserServiceTest {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Test
     void getByEmail은_ACTIVE_상태인_유저를_찾아올_수_있다() {

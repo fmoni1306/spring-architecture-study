@@ -1,0 +1,105 @@
+package org.example.springarchitecture.user.controller;
+
+import org.example.springarchitecture.common.domain.exception.CertificationCodeNotMatchedException;
+import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
+import org.example.springarchitecture.mock.TestContainer;
+import org.example.springarchitecture.user.controller.response.UserResponse;
+import org.example.springarchitecture.user.domain.User;
+import org.example.springarchitecture.user.domain.UserStatus;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+public class UserControllerTest {
+
+
+    @Test
+    void 사용자는_특정_유저의_정보를_개인정보는_없는채_전달_받을_수_있다() {
+        //given
+        TestContainer testContainer = TestContainer.builder()
+                .build();
+
+        testContainer.userRepository.save(User.builder()
+                .id(1L)
+                .email("fmoni1306@gmail.com")
+                .nickname("fmoni1306")
+                .address("Seoul")
+                .status(UserStatus.ACTIVE)
+                .lastLoginAt(100L)
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .build()
+        );
+
+        //when
+        ResponseEntity<UserResponse> result = testContainer.userController.getById(1);
+
+        //then
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
+        assertThat(result.getBody()).isNotNull();
+        assertThat(result.getBody().getEmail()).isEqualTo("fmoni1306@gmail.com");
+        assertThat(result.getBody().getNickname()).isEqualTo("fmoni1306");
+        assertThat(result.getBody().getLastLoginAt()).isEqualTo(100L);
+        assertThat(result.getBody().getStatus()).isEqualTo(UserStatus.ACTIVE);
+    }
+
+    @Test
+    void 사용자는_존재하지_않는_유저의_아이디로_api_호출할_경우_404_응답을_받는다() {
+        // given
+        TestContainer testContainer = TestContainer.builder()
+                .build();
+
+        // when
+        // then
+        assertThatThrownBy(() -> {
+            testContainer.userController.getById(1);
+        }).isInstanceOf(ResourceNotFoundException.class);
+
+    }
+
+    @Test
+    void 사용자는_인증_코드로_계정을_활성화_시킬_수_있다() {
+        // given
+        TestContainer testContainer = TestContainer.builder()
+                .build();
+        testContainer.userRepository.save(User.builder()
+                .id(1L)
+                .email("fmoni1306@gmail.com")
+                .nickname("fmoni1306")
+                .address("Seoul")
+                .status(UserStatus.PENDING)
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
+                .lastLoginAt(100L)
+                .build());
+
+        // when
+        ResponseEntity<Void> result = testContainer.userController.verifyEmail(1, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
+
+        // then
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(302));
+        assertThat(testContainer.userRepository.getById(1L).getStatus()).isEqualTo(UserStatus.ACTIVE);
+    }
+
+    @Test
+    void 사용자는_인증_코드가_일치하지_않을_경우_권한_없음_에러를_내려준다() {
+        // given
+        TestContainer testContainer = TestContainer.builder()
+                .build();
+        testContainer.userRepository.save(User.builder()
+                .id(1L)
+                .email("fmoni1306@gmail.com")
+                .nickname("fmoni1306")
+                .address("Seoul")
+                .status(UserStatus.PENDING)
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab")
+                .lastLoginAt(100L)
+                .build());
+
+        // when
+        assertThatThrownBy(() -> {
+            testContainer.userController.verifyEmail(1, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaac");
+        }).isInstanceOf(CertificationCodeNotMatchedException.class);
+    }
+}

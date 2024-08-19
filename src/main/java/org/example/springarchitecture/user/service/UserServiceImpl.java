@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
 import org.example.springarchitecture.common.service.port.ClockHolder;
 import org.example.springarchitecture.common.service.port.UuidHolder;
+import org.example.springarchitecture.user.controller.port.*;
 import org.example.springarchitecture.user.domain.User;
 import org.example.springarchitecture.user.domain.UserCreate;
 import org.example.springarchitecture.user.domain.UserStatus;
@@ -16,23 +17,26 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Builder
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;
     private final UuidHolder uuidHolder;
     private final ClockHolder clockHolder;
 
+    @Override
     public User getByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
                 .orElseThrow(() -> new ResourceNotFoundException("Users", email));
     }
 
+    @Override
     public User getById(long id) {
         return userRepository.findByIdAndStatus(id, UserStatus.ACTIVE)
                 .orElseThrow(() -> new ResourceNotFoundException("Users", id));
     }
 
+    @Override
     @Transactional
     public User create(UserCreate userCreate) {
         User user = User.from(userCreate, uuidHolder);
@@ -41,6 +45,7 @@ public class UserService {
         return user;
     }
 
+    @Override
     @Transactional
     public User update(long id, UserUpdate userUpdate) {
         User user = getById(id);
@@ -49,6 +54,7 @@ public class UserService {
         return user;
     }
 
+    @Override
     @Transactional
     public void login(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
@@ -56,6 +62,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Override
     @Transactional
     public void verify(long id, String certificationCode) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));

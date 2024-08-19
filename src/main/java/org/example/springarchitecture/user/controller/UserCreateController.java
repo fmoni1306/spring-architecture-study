@@ -1,11 +1,12 @@
 package org.example.springarchitecture.user.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.example.springarchitecture.user.controller.port.UserService;
 import org.example.springarchitecture.user.controller.response.UserResponse;
 import org.example.springarchitecture.user.domain.User;
 import org.example.springarchitecture.user.domain.UserCreate;
-import org.example.springarchitecture.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Builder
 public class UserCreateController {
 
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserCreate userCreate) {
+    public ResponseEntity<UserResponse> create(@RequestBody UserCreate userCreate) {
         User user = userService.create(userCreate);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

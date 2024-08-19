@@ -10,7 +10,7 @@ public class CertificationService {
 
     private final MailSender mailSender;
 
-    public void send(String email, long userId,  String certificationUrl) {
+    public void send(String email, Long userId, String certificationUrl) {
         String url = generateCertificationUrl(userId, certificationUrl);
         System.out.println(url + "================= 메일보냈다 =============");
         String title = "메일제목";
@@ -21,4 +21,5 @@ public class CertificationService {
     private String generateCertificationUrl(long userId, String certificationCode) {
         return "URL ==> " + userId + " == " + certificationCode;
     }
+
 }
