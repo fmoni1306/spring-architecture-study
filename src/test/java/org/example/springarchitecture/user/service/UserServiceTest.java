@@ -2,10 +2,10 @@ package org.example.springarchitecture.user.service;
 
 import org.example.springarchitecture.common.domain.exception.CertificationCodeNotMatchedException;
 import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
-import org.example.springarchitecture.user.domain.UserStatus;
+import org.example.springarchitecture.user.domain.User;
 import org.example.springarchitecture.user.domain.UserCreate;
+import org.example.springarchitecture.user.domain.UserStatus;
 import org.example.springarchitecture.user.domain.UserUpdate;
-import org.example.springarchitecture.user.infrastructure.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +31,7 @@ public class UserServiceTest {
         String email = "fmoni1306@gmail.com";
 
         //when
-        UserEntity result = userService.getByEmail(email);
+        User result = userService.getByEmail(email);
 
         //then
         assertThat(result.getNickname()).isEqualTo("fmoni1306");
@@ -45,14 +45,14 @@ public class UserServiceTest {
         //when
         //then
         assertThatThrownBy(() -> {
-            UserEntity result = userService.getByEmail(email);
+            User result = userService.getByEmail(email);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
     @Test
     void getById는_ACTIVE_상태인_유저를_찾아올_수_있다() {
         //when
-        UserEntity result = userService.getById(2);
+        User result = userService.getById(2);
 
         //then
         assertThat(result.getNickname()).isEqualTo("fmoni1306");
@@ -64,7 +64,7 @@ public class UserServiceTest {
         //when
         //then
         assertThatThrownBy(() -> {
-            UserEntity result = userService.getById(3);
+            User result = userService.getById(3);
         }).isInstanceOf(ResourceNotFoundException.class);
     }
 
@@ -80,7 +80,7 @@ public class UserServiceTest {
                 .build();
 
         //when
-        UserEntity result = userService.create(userCreate);
+        User result = userService.create(userCreate);
 
         //then
         assertThat(result.getId()).isNotNull();
@@ -98,10 +98,10 @@ public class UserServiceTest {
                 .build();
 
         //when
-        UserEntity result = userService.update(2, userUpdate);
+        User user = userService.update(2, userUpdate);
 
         //then
-        UserEntity userEntity = userService.getById(2);
+        User result = userService.getById(2);
         assertThat(result.getId()).isNotNull();
         assertThat(result.getAddress()).isEqualTo("Busan");
         assertThat(result.getNickname()).isEqualTo("fmoni1306-n");
@@ -114,8 +114,8 @@ public class UserServiceTest {
         userService.login(2);
 
         //then
-        UserEntity userEntity = userService.getById(2);
-        assertThat(userEntity.getLastLoginAt()).isGreaterThan(0L);
+        User user = userService.getById(2);
+        assertThat(user.getLastLoginAt()).isGreaterThan(0L);
 //        assertThat(userEntity.getLastLoginAt()).isEqualTo("T.T); FIXME
     }
 
@@ -126,8 +126,8 @@ public class UserServiceTest {
         userService.verify(3, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
 
         //then
-        UserEntity userEntity = userService.getById(3);
-        assertThat(userEntity.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        User user = userService.getById(3);
+        assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
     }
 
     @Test

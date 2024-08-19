@@ -1,8 +1,8 @@
 package org.example.springarchitecture.post.service;
 
+import org.example.springarchitecture.post.domain.Post;
 import org.example.springarchitecture.post.domain.PostCreate;
 import org.example.springarchitecture.post.domain.PostUpdate;
-import org.example.springarchitecture.post.infrastructure.PostEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +25,7 @@ public class PostServiceTest {
     void getById는_존재하는_게시물을_내려준다() {
         //given
         //when
-        PostEntity result = postService.getById(2);
+        Post result = postService.getById(2);
 
         //then
         assertThat(result.getContent()).isEqualTo("helloworld");
@@ -42,7 +42,7 @@ public class PostServiceTest {
                 .build();
 
         // when
-        PostEntity result = postService.create(postCreate);
+        Post result = postService.create(postCreate);
 
         // then
         assertThat(result.getId()).isNotNull();
@@ -61,8 +61,8 @@ public class PostServiceTest {
         postService.update(2, postUpdate);
 
         // then
-        PostEntity postEntity= postService.getById(2);
-        assertThat(postEntity.getContent()).isEqualTo("hello world :)");
-        assertThat(postEntity.getModifiedAt()).isGreaterThan(0);
+        Post result= postService.getById(2);
+        assertThat(result.getContent()).isEqualTo("hello world :)");
+        assertThat(result.getModifiedAt()).isGreaterThan(0);
     }
 }
