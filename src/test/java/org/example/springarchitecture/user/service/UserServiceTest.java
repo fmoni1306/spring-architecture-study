@@ -98,10 +98,9 @@ public class UserServiceTest {
                 .build();
 
         //when
-        User user = userService.update(2, userUpdate);
+        User result = userService.update(2, userUpdate);
 
         //then
-        User result = userService.getById(2);
         assertThat(result.getId()).isNotNull();
         assertThat(result.getAddress()).isEqualTo("Busan");
         assertThat(result.getNickname()).isEqualTo("fmoni1306-n");

@@ -3,6 +3,8 @@ package org.example.springarchitecture.user.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
+import org.example.springarchitecture.common.service.port.ClockHolder;
+import org.example.springarchitecture.common.service.port.UuidHolder;
 import org.example.springarchitecture.user.domain.User;
 import org.example.springarchitecture.user.domain.UserCreate;
 import org.example.springarchitecture.user.domain.UserStatus;
@@ -16,6 +18,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;
+    private final UuidHolder uuidHolder;
+    private final ClockHolder clockHolder;
 
     public User getByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
@@ -29,7 +33,7 @@ public class UserService {
 
     @Transactional
     public User create(UserCreate userCreate) {
-        User user = User.from(userCreate);
+        User user = User.from(userCreate, uuidHolder);
         user = userRepository.save(user);
         certificationService.send(userCreate.getEmail(), user.getId(), user.getCertificationCode());
         return user;
@@ -46,7 +50,7 @@ public class UserService {
     @Transactional
     public void login(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
-        user = user.login();
+        user = user.login(clockHolder);
         userRepository.save(user);
     }
 
