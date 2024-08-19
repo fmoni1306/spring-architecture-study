@@ -8,7 +8,7 @@ import org.example.springarchitecture.user.domain.UserStatus;
 import org.example.springarchitecture.user.domain.UserCreate;
 import org.example.springarchitecture.user.domain.UserUpdate;
 import org.example.springarchitecture.user.infrastructure.UserEntity;
-import org.example.springarchitecture.user.infrastructure.UserRepository;
+import org.example.springarchitecture.user.service.port.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Clock;

@@ -5,7 +5,7 @@ import org.example.springarchitecture.common.domain.exception.ResourceNotFoundEx
 import org.example.springarchitecture.post.domain.PostCreate;
 import org.example.springarchitecture.post.domain.PostUpdate;
 import org.example.springarchitecture.post.infrastructure.PostEntity;
-import org.example.springarchitecture.post.infrastructure.PostRepository;
+import org.example.springarchitecture.post.service.port.PostRepository;
 import org.example.springarchitecture.user.infrastructure.UserEntity;
 import org.example.springarchitecture.user.service.UserService;
 import org.springframework.stereotype.Service;
