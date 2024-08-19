@@ -1,4 +1,4 @@
-package org.example.springarchitecture.user.controller;
+package org.example.springarchitecture.medium;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.springarchitecture.user.domain.UserStatus;

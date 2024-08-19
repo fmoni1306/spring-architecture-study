@@ -1,18 +1,15 @@
-package org.example.springarchitecture.post.controller;
+package org.example.springarchitecture.medium;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.springarchitecture.post.domain.PostCreate;
+import org.example.springarchitecture.user.domain.UserCreate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,35 +17,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
-@SqlGroup({
-        @Sql(value = "/sql/post-create-controller-test-data.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD),
-        @Sql(value = "/sql/delete-all-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
-})
-public class PostCreateControllerTest {
+public class UserCreateControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
-    void 사용자는_게시물을_작성할_수_있다() throws Exception {
+    void 사용자는_회원_가입을_할_수있고_회원가입된_사용자는_PENDING_상태이다() throws Exception {
         // given
-        PostCreate postCreate = PostCreate.builder()
-                .writerId(2)
-                .content("helloworld")
+        UserCreate userCreate = UserCreate.builder()
+                .email("fmoni1306@gmail.com")
+                .nickname("fmoni1306")
+                .address("Busan")
                 .build();
-
         // when
         // then
         mockMvc.perform(
-                        post("/api/posts")
+                        post("/api/users")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(postCreate)))
+                                .content(objectMapper.writeValueAsString(userCreate)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.content").value("helloworld"))
-                .andExpect(jsonPath("$.writer.id").isNumber())
-                .andExpect(jsonPath("$.writer.email").value("fmoni1306@gmail.com"))
-                .andExpect(jsonPath("$.writer.nickname").value("fmoni1306"));
+                .andExpect(jsonPath("$.email").value("fmoni1306@gmail.com"))
+                .andExpect(jsonPath("$.nickname").value("fmoni1306"))
+                .andExpect(jsonPath("$.status").value("PENDING"));
     }
 }

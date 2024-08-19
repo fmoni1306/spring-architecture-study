@@ -1,6 +1,7 @@
 package org.example.springarchitecture.user.infrastructure;
 
 import lombok.RequiredArgsConstructor;
+import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
 import org.example.springarchitecture.user.domain.User;
 import org.example.springarchitecture.user.domain.UserStatus;
 import org.example.springarchitecture.user.service.port.UserRepository;
@@ -13,6 +14,11 @@ import java.util.Optional;
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserJpaRepository userJpaRepository;
+
+    @Override
+    public User getById(Long id) {
+        return findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
+    }
 
     @Override
     public Optional<User> findById(Long id) {

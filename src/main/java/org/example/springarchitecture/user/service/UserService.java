@@ -1,6 +1,7 @@
 package org.example.springarchitecture.user.service;
 
 import jakarta.transaction.Transactional;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
 import org.example.springarchitecture.common.service.port.ClockHolder;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Builder
 public class UserService {
 
     private final UserRepository userRepository;
