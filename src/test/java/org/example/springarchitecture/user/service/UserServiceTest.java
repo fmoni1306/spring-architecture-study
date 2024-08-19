@@ -1,4 +1,4 @@
-package org.example.springarchitecture.service;
+package org.example.springarchitecture.user.service;
 
 import org.example.springarchitecture.common.domain.exception.CertificationCodeNotMatchedException;
 import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
@@ -6,7 +6,6 @@ import org.example.springarchitecture.user.domain.UserStatus;
 import org.example.springarchitecture.user.domain.UserCreate;
 import org.example.springarchitecture.user.domain.UserUpdate;
 import org.example.springarchitecture.user.infrastructure.UserEntity;
-import org.example.springarchitecture.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

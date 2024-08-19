@@ -1,9 +1,8 @@
-package org.example.springarchitecture.service;
+package org.example.springarchitecture.post.service;
 
 import org.example.springarchitecture.post.domain.PostCreate;
 import org.example.springarchitecture.post.domain.PostUpdate;
 import org.example.springarchitecture.post.infrastructure.PostEntity;
-import org.example.springarchitecture.post.service.PostService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

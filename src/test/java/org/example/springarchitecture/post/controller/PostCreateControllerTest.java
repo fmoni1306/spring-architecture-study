@@ -1,4 +1,4 @@
-package org.example.springarchitecture.controller;
+package org.example.springarchitecture.post.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.springarchitecture.post.domain.PostCreate;
