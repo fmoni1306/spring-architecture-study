@@ -1,11 +1,12 @@
 package org.example.springarchitecture.service;
 
-import org.example.springarchitecture.exception.CertificationCodeNotMatchedException;
-import org.example.springarchitecture.exception.ResourceNotFoundException;
-import org.example.springarchitecture.model.UserStatus;
-import org.example.springarchitecture.model.dto.UserCreateDto;
-import org.example.springarchitecture.model.dto.UserUpdateDto;
-import org.example.springarchitecture.repository.UserEntity;
+import org.example.springarchitecture.common.domain.exception.CertificationCodeNotMatchedException;
+import org.example.springarchitecture.common.domain.exception.ResourceNotFoundException;
+import org.example.springarchitecture.user.domain.UserStatus;
+import org.example.springarchitecture.user.domain.UserCreate;
+import org.example.springarchitecture.user.domain.UserUpdate;
+import org.example.springarchitecture.user.infrastructure.UserEntity;
+import org.example.springarchitecture.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -70,9 +71,9 @@ public class UserServiceTest {
 
 
     @Test
-    void userCreateDto_를_이용하여_유저를_생성할_수_있다() {
+    void userCreate_를_이용하여_유저를_생성할_수_있다() {
         //given
-        UserCreateDto userCreateDto = UserCreateDto
+        UserCreate userCreate = UserCreate
                 .builder()
                 .email("fmoni3306@gmail.com")
                 .address("Seoul")
@@ -80,7 +81,7 @@ public class UserServiceTest {
                 .build();
 
         //when
-        UserEntity result = userService.create(userCreateDto);
+        UserEntity result = userService.create(userCreate);
 
         //then
         assertThat(result.getId()).isNotNull();
@@ -89,16 +90,16 @@ public class UserServiceTest {
     }
 
     @Test
-    void userCreateDto_를_이용하여_유저를_수정할_수_있다() {
+    void userCreate_를_이용하여_유저를_수정할_수_있다() {
         //given
-        UserUpdateDto userUpdateDto = UserUpdateDto
+        UserUpdate userUpdate = UserUpdate
                 .builder()
                 .address("Busan")
                 .nickname("fmoni1306-n")
                 .build();
 
         //when
-        UserEntity result = userService.update(2, userUpdateDto);
+        UserEntity result = userService.update(2, userUpdate);
 
         //then
         UserEntity userEntity = userService.getById(2);

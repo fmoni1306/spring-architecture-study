@@ -1,6 +1,8 @@
 package org.example.springarchitecture.repository;
 
-import org.example.springarchitecture.model.UserStatus;
+import org.example.springarchitecture.user.domain.UserStatus;
+import org.example.springarchitecture.user.infrastructure.UserEntity;
+import org.example.springarchitecture.user.infrastructure.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
